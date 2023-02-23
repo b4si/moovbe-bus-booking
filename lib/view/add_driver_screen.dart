@@ -37,7 +37,7 @@ class AddDriverScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: TextFormField(
-                // controller: userNameController,
+                controller: driverNameController,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter the driver name';
@@ -68,7 +68,7 @@ class AddDriverScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: TextFormField(
-                // controller: passwordController,
+                controller: licenseController,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter the License Number';
