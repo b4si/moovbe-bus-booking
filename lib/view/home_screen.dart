@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moovbe/view/bus_layout_screen_1.dart';
+import 'package:moovbe/view/bus_layout_screen_2.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -26,13 +28,22 @@ class HomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                SizedBox(
-                  height: size.height * 0.22,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: const Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets\\bus 1.png'),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const BusLayoutScreen2(),
+                      ),
+                    );
+                  },
+                  child: SizedBox(
+                    height: size.height * 0.22,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: const Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets\\bus 1.png'),
+                      ),
                     ),
                   ),
                 ),
@@ -97,17 +108,27 @@ class HomePage extends StatelessWidget {
                           SizedBox(
                             width: size.width * 0.05,
                           ),
-                          Container(
-                            height: size.height * 0.045,
-                            width: size.width * 0.25,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.redAccent.shade400),
-                            child: const Center(
-                                child: Text(
-                              'Manage',
-                              style: TextStyle(color: Colors.white),
-                            )),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const BusLayoutScreen1(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: size.height * 0.045,
+                              width: size.width * 0.25,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.redAccent.shade400),
+                              child: const Center(
+                                  child: Text(
+                                'Manage',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                            ),
                           )
                         ],
                       ),
