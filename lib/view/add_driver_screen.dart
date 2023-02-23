@@ -1,8 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
+import 'package:moovbe/controller/drivers_provider.dart';
+import 'package:provider/provider.dart';
 
 class AddDriverScreen extends StatelessWidget {
-  const AddDriverScreen({super.key});
-
+  AddDriverScreen({super.key});
+  TextEditingController driverNameController = TextEditingController();
+  TextEditingController licenseController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -21,77 +27,87 @@ class AddDriverScreen extends StatelessWidget {
         ),
         toolbarHeight: 85.0,
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: size.height * 0.05,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: TextFormField(
-              // controller: userNameController,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter the username';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: 'Enter name',
-                hintStyle: TextStyle(
-                  color: Colors.grey.shade500,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.white,
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SizedBox(
+              height: size.height * 0.05,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: TextFormField(
+                // controller: userNameController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter the driver name';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: 'Enter name',
+                  hintStyle: TextStyle(
+                    color: Colors.grey.shade500,
                   ),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.grey.shade300,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                  fillColor: Colors.grey.shade300,
+                  filled: true,
                 ),
-                fillColor: Colors.grey.shade300,
-                filled: true,
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: TextFormField(
-              // controller: passwordController,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter the password';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hintText: 'Enter License number',
-                hintStyle: TextStyle(
-                  color: Colors.grey.shade500,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: TextFormField(
+                // controller: passwordController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter the License Number';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: 'Enter License number',
+                  hintStyle: TextStyle(
+                    color: Colors.grey.shade500,
                   ),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.grey.shade300,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(15),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                  fillColor: Colors.grey.shade300,
+                  filled: true,
                 ),
-                fillColor: Colors.grey.shade300,
-                filled: true,
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: InkWell(
-        onTap: () {},
+        onTap: () {
+          if (_formKey.currentState!.validate()) {
+            Provider.of<DriversProvider>(context, listen: false).addDrivers(
+              driverNameController.text,
+              licenseController.text,
+            );
+          }
+        },
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Container(

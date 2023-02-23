@@ -1,13 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:moovbe/core/urls.dart';
+import 'package:moovbe/model/login_data_model.dart';
+import 'package:moovbe/services/shared_preferences_services.dart';
 import 'package:moovbe/view/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginServies {
-  loginToHome(context, userName, passWord) async {
-    // final provider = Provider.of<LoginProvider>(context, listen: false);
+  dynamic loginData = [];
+  Future loginToHome(context, userName, passWord) async {
     showDialog(
       context: context,
       builder: (context) => const Center(
@@ -31,8 +35,11 @@ class LoginServies {
       ).timeout(
         const Duration(seconds: 15),
       );
+      loginData = json.decode(response.body);
+      var temp = LoginDataModel.fromJson(loginData);
+      log(temp.status.toString());
 
-      if (response.statusCode == 200) {
+      if (temp.status == true) {
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: ((context) => const HomePage())),
             (route) => false);
@@ -49,8 +56,28 @@ class LoginServies {
             content: const Text('Login Successfully completed'),
           ),
         );
+
+        await SharedPreferencesServices().saveApikey(temp.urlId!);
+        await SharedPreferencesServices().saveAccessKey(temp.access!);
+        log(temp.access.toString());
+      } else if (temp.status == false) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.red.shade800,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.all(15.0),
+            elevation: 6.0,
+            margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            content: const Text('Invalid user'),
+          ),
+        );
       }
     } on TimeoutException {
+      Navigator.of(context).pop();
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: ((context) => const HomePage())),
           (route) => false);
